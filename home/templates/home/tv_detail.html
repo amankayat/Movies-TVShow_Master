@@ -1,0 +1,68 @@
+{% extends 'home/base.html' %}
+{% load custom_filters %}
+{% block title %} 
+tv_details
+{% endblock title %}
+
+{% block main %} 
+
+<h1 style="margin-top: 80px;">{{data.name}}</h1> 
+<h4 style="color: grey;"><i>~{{data.tagline}}</i></h4>
+<img src="https://image.tmdb.org/t/p/w200/{{data.poster_path}}" alt=""> <hr>
+<h2> <b>Networks</b> </h2>
+{% for n in data.networks %}
+    <h3>{{n.name}}</h3>
+    <img src="https://image.tmdb.org/t/p/w200/{{n.logo_path}}" alt="" style="background-color: white; padding: 5px;">
+    
+{% endfor %}
+<hr>
+<h4><strong>Number of Seasons: </strong>  {{data.number_of_seasons}} </h4>
+<h4> <strong>Number of episods: </strong> {{data.number_of_episodes}} </h4>
+    <hr>
+<h2> <b>Generes</b> </h2>
+<ul>
+    {% for n in data.genres %}
+    <li>{{n.name}}</li>
+    {% endfor %}
+
+</ul>
+<hr>
+<h2> <b>Languages</b> </h2>
+<ul>
+    {% for n in data.languages %}
+    <li>{{n}}</li>
+    {% endfor %}
+</ul>
+<hr>
+<h2> <b>Last Episode as of Today</b> </h2>
+<p>
+    <strong>Air Date: </strong> {{data.last_episode_to_air.air_date}} <br>
+    <strong>Episode Number: </strong> {{data.last_episode_to_air.episode_number}} <br>
+    <strong> Name: </strong> {{data.last_episode_to_air.name}} <br>
+    <strong> Overview: </strong> {{data.last_episode_to_air.overview}}
+
+</p>
+<hr>
+
+<h2> <b>Recommendations</b> </h2>
+<div class="row text-dark">
+
+    {% for r in recommendations.results %}
+    <div class="card mb-5 m-3" style="width: 18rem;">
+        <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          {% if not r.name %}
+          <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+          {% else %}
+          <h5 class="card-title"><b>{{r.name}}</b> </h5>
+          {% endif %}
+          <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+         
+          <a href="/{{ type }}/{{ r.id }}/" class="btn btn-primary">View Details</a>
+          
+        </div>
+      </div>
+      {% endfor %} 
+     
+</div>
+{% endblock main %}

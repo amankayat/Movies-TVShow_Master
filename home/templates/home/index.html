@@ -1,0 +1,133 @@
+{% extends 'home/base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block title %} 
+
+home
+{% endblock title %}
+
+{% block body %} 
+
+<div class="carousel active " style="margin-top: 40px;">
+    <img class="d-block w-100" src="{% static 'images/m3.jpg' %}" alt="First slide" height="600px" >
+  
+    
+</div>
+
+{% endblock body %}
+
+
+{% block main %} 
+
+<div class="carousel-caption" style=" position: absolute; bottom: 250px; ">
+    <form action="/search/" method="get" class="row g-3 ">
+        <div class="flex d-flex justify-content-center">
+            <select name="type"  class="form-select w-50 text-center">
+                <option value="movie" > Movies  </option>
+                <option value="tv">TV Shows</option>
+                <option value="person">Peoples</option>
+        
+            </select>
+        </div>
+      
+        <div class="flex d-flex justify-content-center">
+            <input type="text" class="form-control w-50" placeholder="Search Query" name="q">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-warning">Search</button>
+        </div>
+    </form>
+</div>
+
+<hr>
+<div class="card" id="mov" style="background-color:bisque">
+    <h1 class="text-center card-title text-dark" ><b>TRENDING MOVIES </b></h1>
+</div>
+
+<div class="row flex d-flex justify-content-center text-dark">
+
+    {% for r in data.results %}
+    {% if forloop.counter <  10 %}
+    <div class="card mb-5 m-3 " style="width: 19rem; ">
+        <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="..." >
+        <div class="card-body">
+          {% if not r.name %}
+          <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+          {% else %}
+          <h5 class="card-title"><b>{{r.name}}</b> </h5>
+          {% endif %}
+          <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+          {% if type == "tv"  %}
+          <a href="{% url 'tvdetail' r.id %}" class="btn btn-primary">View Details</a>
+          {% else %}
+          <a href="{% url 'moviedetail' r.id %}" class="btn btn-primary">View Details</a>
+          {% endif %}
+        
+       
+       
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %} 
+     
+</div>
+<hr>
+<div class="card" id="tv" style="background-color: bisque;">
+    <h1 class="text-center card-title text-dark"><b>TRENDING TVSHOWS</b></h1>
+</div>
+<div class="row flex d-flex justify-content-center text-dark">
+
+    {% for r in data1.results %}
+    {% if forloop.counter <  10 %}
+    <div class="card mb-5 m-3 " style="width: 19rem;">
+        <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          {% if not r.name %}
+          <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+          {% else %}
+          <h5 class="card-title"><b>{{r.name}}</b> </h5>
+          {% endif %}
+          <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+         
+          <a href="{% url 'tvdetail' r.id %}" class="btn btn-primary">View Details</a>
+         
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %} 
+     
+</div>
+    
+       
+{% endblock main %}
+
+
+{% block about %}
+
+
+    
+    <div id="about" class="footer-content bg-dark text-white">
+        <h3 class="p-2"><b> Developed By : Aman Kayat</b> </h3>
+        <p>This website is all about Movies, TvShows and Peoples related informations. If you want to know about any Movies 
+            details then you can search it here, this site will provides you to the details of that Movie. Also you can see 
+            trending movies and tv shows on this website.  
+        </p>
+        <ul class="socials">
+            <li><a href="https://github.com/amankayat"><i class="fa fa-github"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/aman-kayat-554195186/"><i class="fa fa-linkedin-square"></i></a></li>
+            <li><a href="https://www.instagram.com/aman.k789/"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="mailto: amankayat789@example.com"><i class="fa fa-envelope"></i></a></li>
+         
+        </ul>
+        
+    </div>
+    <div style=" float: right; margin-right: 5px;">
+        <a href="#top" class="btn btn-light"> Top </a>
+    </div>
+    <div class="footer-bottom flex d-flex justify-content-center">
+        <p class="text-white">copyright &copy; <a href="#">2023 Aman  </a>  </p>
+                
+    </div>
+
+
+{% endblock about %}

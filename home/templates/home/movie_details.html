@@ -1,0 +1,59 @@
+{% extends 'home/base.html' %}
+{% load custom_filters %}
+{% load numbers %}
+{% block title %} 
+movie_details
+{% endblock title %}
+
+{% block main %} 
+
+<h1 style="margin-top: 80px;"><b>{{data.title}} </b> </h1> 
+<h4 style="color: grey;"><i>~{{data.tagline}}</i></h4>
+<img src="https://image.tmdb.org/t/p/w200/{{data.poster_path}}" alt=""> <hr>
+<h2> <b>Overview</b> </h2>
+<p>{{data.overview}}</p>
+<hr>
+
+<h2> <b>Genres</b> </h2>
+<ul>
+    {% for n in data.genres %}
+    <li>{{n.name}}</li>
+    {% endfor %}
+
+</ul>
+<hr>
+
+<h2> <b>General Information</b> </h2>
+<p>
+    
+    <strong>Release Date: </strong> {{data.release_date}} <br>
+    <strong>Budget: </strong> ${{data.budget|format_num }} <br>
+    <strong>Revenue: </strong> ${{data.revenue|format_num }} <br>
+    <strong> Runtime: </strong> {{data.runtime}} min<br>
+    
+
+</p>
+<hr>
+<h2> <b>Recommendations</b> </h2>
+<div class="row text-dark">
+
+    {% for r in recommendations.results %}
+    <div class="card mb-5 m-3" style="width: 18rem;">
+        <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          {% if not r.name %}
+          <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+          {% else %}
+          <h5 class="card-title"><b>{{r.name}}</b> </h5>
+          {% endif %}
+          <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+         
+          <a href="/{{ type }}/{{ r.id }}/" class="btn btn-primary">View Details</a>
+          
+        </div>
+      </div>
+      {% endfor %} 
+     
+</div>
+
+{% endblock main %}

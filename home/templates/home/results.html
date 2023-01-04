@@ -1,0 +1,67 @@
+{% extends 'home/base.html' %}
+{% load custom_filters %}
+{% block title %} 
+Results
+{% endblock title %}
+
+{% block body %} 
+
+{% if type == "person" %}
+<div class="row flex d-flex justify-content-center p-3 text-dark " style="margin-top: 40px;">
+
+
+
+  {% for r in data.results %}
+  
+  <div class="card mb-5 m-3 " style="width: 18rem;">
+    
+      <img src="https://image.tmdb.org/t/p/w200/{{r.profile_path}}" class="card-img-top" alt="..." height="250px">
+      
+      <div class="card-body">
+        
+        <h5 class="card-title"><b>{{r.name}}</b> </h5>
+       
+        <p class="card-text"> <strong>Popularity:</strong>  {{r.popularity}}</p>
+      {% for i in r.known_for %}
+      {% if forloop.counter < 2 %}
+      <p class="card-text"> <strong>Known for: </strong>  {{i.original_title}}</p>
+      {% endif %}
+      {% endfor %}
+       
+      </div>
+    </div>
+    {% endfor %} 
+   
+</div>
+
+{% else %}
+
+  {% if data.results %}   
+    <div class="row flex d-flex justify-content-center p-3 text-dark " style="margin-top: 40px;">
+
+        {% for r in data.results %}
+        <div class="card mb-5 m-3 " style="width: 18rem;">
+            <img src="https://image.tmdb.org/t/p/w200/{{r.poster_path}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              {% if not r.name %}
+              <h5 class="card-title"> <b>{{r.title}}</b> </h5>
+              {% else %}
+              <h5 class="card-title"><b>{{r.name}}</b> </h5>
+              {% endif %}
+              <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
+              {% if type == "tv"  %}
+              <a href="{% url 'tvdetail' r.id %}" class="btn btn-primary">View Details</a>
+              {% else %}
+              <a href="{% url 'moviedetail' r.id %}" class="btn btn-primary">View Details</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %} 
+         
+</div>
+{% else %}
+<h2 style="margin-top: 80px; color: white;" class="text-center">No results!!</h2>
+{% endif %}
+{% endif %}
+
+{% endblock body %}
