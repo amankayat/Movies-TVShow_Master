@@ -1,5 +1,6 @@
 {% extends 'home/base.html' %}
 {% load custom_filters %}
+{% load static %}
 {% block title %} 
 tv_details
 {% endblock title %}
@@ -8,7 +9,44 @@ tv_details
 
 <h1 style="margin-top: 80px;">{{data.name}}</h1> 
 <h4 style="color: grey;"><i>~{{data.tagline}}</i></h4>
-<img src="https://image.tmdb.org/t/p/w200/{{data.poster_path}}" alt=""> <hr>
+<div class="row">
+    <div class="col-md-4">
+      <img src="https://image.tmdb.org/t/p/w200/{{data.poster_path}}" alt=""> 
+     
+    </div>
+      <div class="col-md-4 text-center">
+        <div class="col-md-4 texr-center mt-5 ">
+          <h4 style="font-size: 1.5rem;
+          color: white;
+          margin-left: 30px;
+          font-family: 'Arial', sans-serif;
+          text-shadow: 0 0 1.5rem white, 0 0 3.5rem white, 0 0 5rem white, 0 0 7rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de, 0 0 12rem #ff00de, 0 0 15rem #ff00de;">Watch Trailer </h4>
+          <br> <br> <br><img class="" src="{% static 'images/arrow1.jpg' %}" alt="" width="130" style=" margin-left: 25px;">
+        </div>
+        </div>
+        
+      
+      
+  
+     
+    
+    
+    <div class="col-md-4 text-center" >
+      <div>
+        
+      
+          {% if video_id %}
+          <iframe width="100%" height="300px" src="https://www.youtube.com/embed/{{ video_id }}" frameborder="0" allowfullscreen></iframe>
+      {% else %}
+      <h1 class="text-center">Trailer Not Found!!</h1>
+      {% endif %}
+         
+      
+    
+       
+    </div>
+    </div>
+  </div> <hr>
 <h2> <b>Networks</b> </h2>
 {% for n in data.networks %}
     <h3>{{n.name}}</h3>
@@ -59,6 +97,7 @@ tv_details
           <p class="card-text">{{r.overview|range_filter|linebreaks}}</p>
          
           <a href="/{{ type }}/{{ r.id }}/" class="btn btn-primary">View Details</a>
+          
           
         </div>
       </div>
